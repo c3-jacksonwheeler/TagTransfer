@@ -3,8 +3,7 @@ const { TagConnection } = require('./TagConnection.js')
 const { TagTransfer } = require('./TagTransfer.js')
 
 const startWithTestData = true;
-const {testData} = require("../testData.js")
-console.log(testData)
+// console.log(testData)
 
 //static 
 class TransferState{
@@ -62,6 +61,9 @@ class TransferState{
 	}
 
 	static setup(){
+		console.log("setup")
+		const {testData} = require("../testData.js")
+
 		TransferState.ipcMain = ipcMain;
 
 		TransferState.startListeners()

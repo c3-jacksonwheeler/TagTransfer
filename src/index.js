@@ -43,15 +43,58 @@ function createWindow () {
   
 }
 
-app.whenReady().then(() => {
-  createWindow()
+const testDataFileInit = `
+let testData = {
+  fromConfig: {
+    host:"https://<your environment>.c3.ai/",
+    tenant:"<tenant>",
+    tag:"<tag>",
+    token:"<c3Auth Token>",
+  },
+  toConfig: {
+    host:"localhost:8080",
+    tenant:"<tenant>",
+    tag:"<tag>",
+    token:"<c3Auth Token>",
+  }
+}
+module.exports = {testData}
+`
+/*
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0){
-    	createWindow()
-    }
+
+
+*/
+
+
+let start = ()=>{
+  TransferState.setup(ipcMain);
+
+  app.whenReady().then(() => {
+    createWindow()
+
+    app.on('activate', function () {
+      if (BrowserWindow.getAllWindows().length === 0){
+        createWindow()
+      }
+    })
   })
-})
+
+
+}
+
+fs.exists("testData.js", function (exists) {
+  if(exists){
+    start();
+  }
+  else{
+    fs.writeFile("testData.js", testDataFileInit, {flag: 'wx'}, function (err, data){ 
+        start();
+    })
+  }
+});
+
+
 
 
 app.on('window-all-closed', function () {
@@ -61,7 +104,6 @@ app.on('window-all-closed', function () {
 })
 
 
-TransferState.setup(ipcMain);
 
 
 
