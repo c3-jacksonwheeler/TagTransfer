@@ -1,6 +1,5 @@
 const { ipcRenderer } = require('electron')
 
-let url = 'http://localhost:8080/api/1/nypa/prod/VanityUrl?action=fetch'
 
 // window.setTimeout(()=>{
 // 	ipcRenderer.sendSync('requestData', {url})

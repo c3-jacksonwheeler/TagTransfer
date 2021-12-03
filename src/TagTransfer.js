@@ -27,9 +27,16 @@ class TransferManager{
 		this.fromConn = fromConn;
 		this.toConn = toConn;
 
-		
+		//========================================================================================================
 
-		this.typeIndex = 0;
+		this.typeIndex = 0; // SET THIS TO THE INDEX YOU WOULD LIKE TO START FROM (if a previous transfer failed partway through)
+
+		//========================================================================================================
+
+
+
+
+
 		this.currentType = this.typesToFetch[this.typeIndex];
 		this.done = false || (this.currentType == undefined);
 

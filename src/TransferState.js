@@ -9,13 +9,13 @@ const testData = {
 		host:"https://nypa-em-predev.c3.ai/",
 		tenant:"nypa",
 		tag:"prod",
-		token:"",
+		token:"303328f5bed9e1420e9ff458247696bff39e74cf717d778a5ebd76800870a52c68a4e0f1008be55d841acda7a52ef12128aa4f7e19038f363b7f6e0f2d029dcaef6c",
 	},
 	toConfig: {
 		host:"localhost:8080",
 		tenant:"nypa",
 		tag:"prod",
-		token:""
+		token:"3033a40dbc1c88fdbf1d299603204afa68f3295c6da572eb7202e69ffbe8bba8b940"
 	}
 
 }
