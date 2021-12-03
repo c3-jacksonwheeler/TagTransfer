@@ -12,7 +12,7 @@ blacklist = getTypeBlacklist()
 const useTestingWhitelist = false;
 let testingWhitelist = []
 
-const skipMerge = false//true;
+const skipMerge = true;
 
 
 const batchSize = 10000;

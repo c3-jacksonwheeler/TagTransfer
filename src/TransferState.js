@@ -3,7 +3,22 @@ const { TagConnection } = require('./TagConnection.js')
 const { TagTransfer } = require('./TagTransfer.js')
 
 const startWithTestData = false;
+const testData = {
 
+	fromConfig: {
+		host:"https://nypa-em-predev.c3.ai/",
+		tenant:"nypa",
+		tag:"prod",
+		token:"",
+	},
+	toConfig: {
+		host:"localhost:8080",
+		tenant:"nypa",
+		tag:"prod",
+		token:""
+	}
+
+}
 
 
 //static 
