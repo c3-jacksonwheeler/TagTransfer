@@ -1,0 +1,81 @@
+<html>
+<link rel="stylesheet" href="main.css">
+<!--<script>window.$ = window.jQuery = require('jquery');</script>-->
+ <script>
+  var $ = jQuery = require("jquery")
+</script>
+
+<script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
+
+<body>
+<div class="rootContainer">
+	<div class="contentContainer">
+		<div class="row headerRow">
+			Transfer Data Between Tags
+		</div>
+		<div class="row inputRow">
+			<div class="InputContainer">
+				<div class="InnerHeader">From</div>
+				<div class="InnerForm">
+					
+					<input type="text" class="FormInput" placeholder="Source Environment URL" id="from_host">
+					
+					
+					<div class="FormInputRow">
+						<input class="FormInputRow_Input FormInput" type="text" placeholder="tenant" id="from_tenant">
+						<div class="FormInputRow_Divider FormInput">:</div>
+						<input class="FormInputRow_Input FormInput" type="text" placeholder="tag" id="from_tag">
+					</div>
+
+					<input type="text" class="FormInput" placeholder="c3 AuthToken" id="from_token">
+				</div>
+			</br>
+				<div class="ValidationContainer" id="from_validate">
+					<div class="ValidationContainer_Unconnected"></div>
+				</div>
+				
+				<div class="InputBlock" id="fromInputBlock" style="display:none"></div>
+			</div>
+			<div class="InputContainer">
+				<div class="InnerHeader">To</div>
+				<div class="InnerForm">
+					
+					<input type="text" class="FormInput" placeholder="Destintion Environment URL" id="to_host">
+					
+					
+					<div class="FormInputRow">
+						<input class="FormInputRow_Input FormInput" type="text" placeholder="tenant" id="to_tenant">
+						<div class="FormInputRow_Divider FormInput">:</div>
+						<input class="FormInputRow_Input FormInput" type="text" placeholder="tag" id="to_tag">
+					</div>
+
+					<input type="text" class="FormInput" placeholder="c3 AuthToken" id="to_token">
+				</div>
+				<div class="ValidationContainer" id="to_validate">
+					<div class="ValidationContainer_Unconnected"></div>
+				</div>
+				<div class="InputBlock" id="toInputBlock" style="display:none"></div>
+
+			</div>
+			<div class="SubmitContainer">
+				<button id="transferStart">Transfer!</button>
+			</div>
+		</div>
+		<div class="InputContainer">
+				<div class="InnerHeader">Transfer Status</div>
+				<div id="TransferStatusContainer">
+					Not Started
+				</div>
+		</div>
+	</div>
+</div>
+</body>
+<script src="TagConfigManager.js"></script>
+<script src="Transfer.js"></script>
+
+<script src="main.js">
+
+
+
+</script>
+</html>
