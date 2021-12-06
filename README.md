@@ -6,6 +6,8 @@
 2. npm install
 3. npm run start
 
+<img width="988" alt="Screen Shot 2021-12-03 at 3 48 24 PM" src="https://user-images.githubusercontent.com/73851169/144686994-e5947453-a716-46f9-bc71-df1460f049b3.png">
+
 
 
 ## To debug issues during transfer
