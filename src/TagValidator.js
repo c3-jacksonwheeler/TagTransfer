@@ -74,32 +74,27 @@ class TagValidator {
 			});
 		}
 
-		// event.reply('test',undefined)
 
 	}
 
 	static parseValidationResponse(res, resolve, requestUrl) {
-		// console.log("test")
 
 		console.log(Object.keys(res))
-		// console.log(Object.keys(res))
 		if (res.errno) {
 			//Failure connecting
 			resolve({ status: "bad", code: res.code })
 
 		}
 		else if (res.response) {
-			// if(res.response.status == 200){
-			// 	resolve({status:"good", code:res.response.status})
-			// }
-			// else{
+		
 			resolve({ status: "bad", code: res.response.status + " " + res.response.statusText })
-			// }
 		}
 		else if (res.status) {
 			if (res.status == 200) {
 				if(res.request && res.request.res && res.request.res.responseUrl){
+
 					if(res.request.res.responseUrl != requestUrl){
+						// Okta redirect (or other redirect)
 						resolve({ status: "bad", code: "Expired or incorrect AuthToken" })
 					}
 				}
