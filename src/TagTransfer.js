@@ -12,30 +12,21 @@ blacklist = getTypeBlacklist()
 const useTestingWhitelist = false;
 let testingWhitelist = []
 
-const skipMerge = true;
-
 
 const batchSize = 10000;
 const tickDelay = 50;
 class TransferManager {
-	constructor(TransferState, typesToFetch, fromConn, toConn, callback) {
+	constructor(TransferState, startFrom=0, typesToFetch, fromConn, toConn, useDryRun=false, callback) {
 
 		this.TransferState = TransferState;
 
+		this.useDryRun = useDryRun;
 		this.callback = callback;
 		this.typesToFetch = typesToFetch;
 		this.fromConn = fromConn;
 		this.toConn = toConn;
 
-		//========================================================================================================
-
-		this.typeIndex = 0; // SET THIS TO THE INDEX YOU WOULD LIKE TO START FROM (if a previous transfer failed partway through)
-
-		//========================================================================================================
-
-
-
-
+		this.typeIndex = startFrom; 
 
 		this.currentType = this.typesToFetch[this.typeIndex];
 		this.done = false || (this.currentType == undefined);
@@ -76,7 +67,7 @@ class TransferManager {
 		this.fetchBatch().then((results) => {
 			let { objs, hasMore } = results;
 
-			this.mergeBatch(skipMerge ? [] : objs).then((res) => {
+			this.mergeBatch(this.useDryRun ? [] : objs).then((res) => {
 				console.log("hasMore", hasMore, " count: ", objs ? objs.length : 0)
 				if (!hasMore) {
 
@@ -177,8 +168,11 @@ class TransferManager {
 
 
 class TagTransfer {
-	constructor(TransferState) {
+	constructor(TransferState, data) {
 		this.TransferState = TransferState;
+
+		this.config = data;
+
 		//Setup and validate connections
 		this.fromConn = TransferState.fromConn;//new TagConnection(data.configs[0])
 		this.toConn = TransferState.toConn;//new TagConnection(data.configs[1])
@@ -196,7 +190,7 @@ class TagTransfer {
 		this.step = "Getting Type List"
 		this.TransferState.pushState()
 
-		console.log("LETS GO")
+		console.log("LETS GO: ", this.config)
 
 
 		//Compare Persistable types between the two connections
@@ -209,7 +203,7 @@ class TagTransfer {
 			this.step = "Filtering Type List"
 			this.TransferState.pushState()
 
-			console.log(results);
+			// console.log(results);
 			let fromTypes = results[0].data.mixinTypesByType['Persistable'];
 			let fromTypeIds = _.pluck(fromTypes, 'typeName')
 
@@ -217,10 +211,17 @@ class TagTransfer {
 			let toTypeIds = _.pluck(toTypes, 'typeName')
 
 			let commonEntities = _.intersection(toTypeIds, fromTypeIds);
-			// console.log(commonEntities)
 
 			let typesToProcess = _.difference(commonEntities, blacklist)
-			// console.log(typesToProcess);
+			
+
+			// Apply whitelist and blacklist from config
+
+			typesToProcess = _.difference(typesToProcess, this.config.blacklist)
+			
+			if(this.config.useWhitelist){
+				typesToProcess = _.intersection(typesToProcess,this.config.whitelist)
+			}
 
 			//Need to return these back to the server to check if they are really 
 
@@ -265,7 +266,7 @@ class TagTransfer {
 				}
 				this.step = "Transferring"
 				this.TransferState.pushState()
-				this.manager = new TransferManager(this.TransferState, typesToFetch, this.fromConn, this.toConn, () => {
+				this.manager = new TransferManager(this.TransferState, this.config.startFrom, typesToFetch, this.fromConn, this.toConn, this.config.useDryRun,() => {
 					this.step = "Complete"
 					console.log("Done!")
 					this.done = true;
@@ -323,12 +324,12 @@ class TagTransfer {
 		return false;
 	}
 
-	static beginTransfer(TransferState) {
+	static beginTransfer(TransferState, data) {
 		if (TagTransfer.inst) {
 			TagTransfer.inst.canceled = true;
 		}
 
-		TagTransfer.inst = new TagTransfer(TransferState)
+		TagTransfer.inst = new TagTransfer(TransferState, data)
 
 
 

@@ -38,7 +38,7 @@ class TransferState {
 	}
 	static receiveTransferRequest(event, data) {
 		if (TransferState.getTransferState().readyToStart) {
-			TagTransfer.beginTransfer(TransferState)
+			TagTransfer.beginTransfer(TransferState, data)
 		}
 
 	}
