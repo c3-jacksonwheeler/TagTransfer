@@ -1,12 +1,12 @@
-const {ipcMain} = require("electron");
+const { ipcMain } = require("electron");
 const axios = require('axios');
 
-function fixHost(raw){
-	if(raw.lastIndexOf('/') == raw.length-1){
-		raw = raw.substring(0,raw.length-1);//strip the /
+function fixHost(raw) {
+	if (raw.lastIndexOf('/') == raw.length - 1) {
+		raw = raw.substring(0, raw.length - 1);//strip the /
 	}
 
-	if(raw.indexOf('http') != 0){
+	if (raw.indexOf('http') != 0) {
 		raw = 'http://' + raw;//default to http instead of https due to proabable usage of localhost
 	}
 	return raw;
@@ -18,26 +18,26 @@ Correct
 
 Invalid Host
 [
-  'errno',
-  'code',
-  'syscall',
-  'hostname',
-  'config',
-  'request',
-  'response',
-  'isAxiosError',
-  'toJSON'
+	'errno',
+	'code',
+	'syscall',
+	'hostname',
+	'config',
+	'request',
+	'response',
+	'isAxiosError',
+	'toJSON'
 ]
  errno: -3008,
-  code: 'ENOTFOUND'
+	code: 'ENOTFOUND'
 
 Connection refused
 [
-  'errno',        'code',
-  'syscall',      'address',
-  'port',         'config',
-  'request',      'response',
-  'isAxiosError', 'toJSON'
+	'errno',        'code',
+	'syscall',      'address',
+	'port',         'config',
+	'request',      'response',
+	'isAxiosError', 'toJSON'
 ]
 errno: -61,
 code: 'ECONNREFUSED',
@@ -53,22 +53,22 @@ response.statusText= "Unauthorized"
 
 
 class TagValidator {
-	constructor(data){
+	constructor(data) {
 		console.log("Validating Tag: ", data);
 
-		if(!data.host){
+		if (!data.host) {
 			console.log("Bad host")
 			return;
 		}
-		else{
+		else {
 			TagValidator.instances.push(this);
 
-			TagValidator.validate(data).then((result)=>{
-				event.reply(data.respondTo,result)
+			TagValidator.validate(data).then((result) => {
+				event.reply(data.respondTo, result)
 
-				for(let i = 0; i < TagValidator.instances.length; i++){
-					if(TagValidator.instances[i] == this){
-						TagValidator.instances.splice(i,1);
+				for (let i = 0; i < TagValidator.instances.length; i++) {
+					if (TagValidator.instances[i] == this) {
+						TagValidator.instances.splice(i, 1);
 					}
 				}
 			});
@@ -78,69 +78,74 @@ class TagValidator {
 
 	}
 
-	static parseValidationResponse(res, resolve){
+	static parseValidationResponse(res, resolve, requestUrl) {
 		// console.log("test")
 
 		console.log(Object.keys(res))
 		// console.log(Object.keys(res))
-		if(res.errno){
+		if (res.errno) {
 			//Failure connecting
-			resolve({status:"bad", code:res.code})
+			resolve({ status: "bad", code: res.code })
 
 		}
-		else if(res.response){
+		else if (res.response) {
 			// if(res.response.status == 200){
 			// 	resolve({status:"good", code:res.response.status})
 			// }
 			// else{
-			resolve({status:"bad", code:res.response.status + " " + res.response.statusText})
+			resolve({ status: "bad", code: res.response.status + " " + res.response.statusText })
 			// }
 		}
-		else if(res.status){
-			if(res.status == 200){
-				resolve({status:"good", code:res.status})
+		else if (res.status) {
+			if (res.status == 200) {
+				if(res.request && res.request.res && res.request.res.responseUrl){
+					if(res.request.res.responseUrl != requestUrl){
+						resolve({ status: "bad", code: "Expired or incorrect AuthToken" })
+					}
+				}
+				resolve({ status: "good", code: res.status })
 			}
-			else{
-				resolve({status:"bad", code:res.status + " " + res.statusText})
+			else {
+				resolve({ status: "bad", code: res.status + " " + res.statusText })
 			}
 		}
-		else{
+		else {
 			console.log("Unknown connection err", res)
-			resolve({status:"bad", code:"Unknown"})
+			resolve({ status: "bad", code: "Unknown" })
 		}
 
-		
+
 	}
-	static validate(data){
-		return new Promise((resolve)=>{
+	static validate(data) {
+		return new Promise((resolve) => {
 			let host = fixHost(data.host);
 
 			let url = `${host}/api/1/${data.tenant}/${data.tag}/Console?action=init`
 			let headers = {
-	            	Cookie: `c3auth=${data.token}; c3tenant=${data.tenant}; c3tag=${data.tag}`
-				}
+				Cookie: `c3auth=${data.token}; c3tenant=${data.tenant}; c3tag=${data.tag}`
+			}
 
 			console.log("Sending request to - ", url)
-			
-			axios.post(url, {},{headers})
-			.catch((err) => {
-				TagValidator.parseValidationResponse(err, resolve)
-			})
-			.then(response => {
-				TagValidator.parseValidationResponse(response, resolve)
 
-			}).catch((err) => {
-				// TagValidator.parseValidationResponse(err, resolve)
-				// console.log(err)
-				// resolve({status:"bad3"})
-			});
+			axios.post(url, {}, { headers })
+				.catch((err) => {
+					TagValidator.parseValidationResponse(err, resolve, url)
+				})
+				.then(response => {
+					TagValidator.parseValidationResponse(response, resolve, url)
+
+				}).catch((err) => {
+					// TagValidator.parseValidationResponse(err, resolve)
+					// console.log(err)
+					// resolve({status:"bad3"})
+				});
 
 		})
-		
+
 	}
 
 
-	static validateTag(event, data){
+	static validateTag(event, data) {
 		new TagValidator(event, data)
 	}
 

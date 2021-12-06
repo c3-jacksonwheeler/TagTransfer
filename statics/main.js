@@ -14,15 +14,15 @@ const { ipcRenderer } = require('electron')
 // })
 
 
-window.onload = function(){
-	window.tagConfigs = {from: new TagConfigManager("from"), to: new TagConfigManager("to")}
+window.onload = function () {
+	window.tagConfigs = { from: new TagConfigManager("from"), to: new TagConfigManager("to") }
 
 
 	// ipcRenderer.on('transferInfo', Transfer.receiveTransferInformation)
 
 
 	// dummyDataStart();
-	ipcRenderer.on('respondState',(event, state)=>{
+	ipcRenderer.on('respondState', (event, state) => {
 		console.log(state)
 		window.tagConfigs.from.assumeConfig(state.connection.from)
 		window.tagConfigs.to.assumeConfig(state.connection.to)
@@ -37,12 +37,12 @@ window.onload = function(){
 	})
 
 	// console.log("abc")
-	ipcRenderer.send('requestState',{})
+	ipcRenderer.send('requestState', {})
 
 
 
-	$("#transferStart").click(()=>{
-		
+	$("#transferStart").click(() => {
+
 		Transfer.requestTransfer();
 
 

@@ -6,63 +6,63 @@ const startWithTestData = true;
 // console.log(testData)
 
 //static 
-class TransferState{
+class TransferState {
 
-	constructor(){
+	constructor() {
 		throw "Dont instantiate this"
 	}
-	static getConnectionState(){
+	static getConnectionState() {
 		return {
 			to: TransferState.toConn.serialize(),
 			from: TransferState.fromConn.serialize()
 		}
 	}
-	static getTransferState(){
+	static getTransferState() {
 		return {
 			inProgress: TagTransfer.inProgress(),
 			readyToStart: TransferState.toConn.connected && TransferState.fromConn.connected && !TagTransfer.inProgress(),
 			details: TagTransfer.getStateDetails()
-		}	
+		}
 	}
-	static pushState(){
-		if(TransferState.nextReplyEvent){
+	static pushState() {
+		if (TransferState.nextReplyEvent) {
 			TransferState.nextReplyEvent.reply('respondState', TransferState.getState())
 		}
 	}
 
-	static getState(){
+	static getState() {
 		return {
 			connection: TransferState.getConnectionState(),
 			transfer: TransferState.getTransferState()
 		}
 	}
-	static receiveTransferRequest(event, data){
-		if(TransferState.getTransferState().readyToStart){
+	static receiveTransferRequest(event, data) {
+		if (TransferState.getTransferState().readyToStart) {
 			TagTransfer.beginTransfer(TransferState)
 		}
-		
+
 	}
-	static receiveTagConfig(event, config){
+	static receiveTagConfig(event, config) {
 		console.log("Receive Tag Config: ", config)
 
-		if(config.which == "from"){
+		if (config.which == "from") {
 			TransferState.fromConn.updateConfig(config);
 		}
-		else{
+		else {
 			TransferState.toConn.updateConfig(config);
 		}
 
 	}
-	static sendState(event, data){
+	static sendState(event, data) {
 		console.log("Renderer requested config state")
 		TransferState.nextReplyEvent = event;
 
 		event.reply('respondState', TransferState.getState())
 	}
 
-	static setup(){
+	static setup() {
 		console.log("setup")
-		const {testData} = require("../testData.js")
+		const { testData } = require("../testData.js")
 
 		TransferState.ipcMain = ipcMain;
 
@@ -70,14 +70,14 @@ class TransferState{
 
 		TransferState.transfering = false;
 
-		TransferState.fromConn = new TagConnection(startWithTestData?testData.fromConfig:{}, TransferState);
-		TransferState.toConn = new TagConnection(startWithTestData?testData.toConfig:{}, TransferState);
-	
+		TransferState.fromConn = new TagConnection(startWithTestData ? testData.fromConfig : {}, TransferState);
+		TransferState.toConn = new TagConnection(startWithTestData ? testData.toConfig : {}, TransferState);
+
 
 
 	}
 
-	static startListeners(){
+	static startListeners() {
 
 
 		ipcMain.on('submitTagConfig', TransferState.receiveTagConfig)

@@ -11,36 +11,36 @@ let win;
 
 const axios = require('axios');
 
-const {TagTransfer} = require('./TagTransfer.js')
-const {TagValidator} = require('./TagValidator.js')
+const { TagTransfer } = require('./TagTransfer.js')
+const { TagValidator } = require('./TagValidator.js')
 
-const {TransferState} = require('./TransferState.js')
+const { TransferState } = require('./TransferState.js')
 
 
-function createWindow () {
-	win = new BrowserWindow({
-	    width: 1000,
-	    height: 800,
-	    webPreferences: {
-			nodeIntegration: true, // is default value after Electron v5
-			contextIsolation: false, // protect against prototype pollution
-			enableRemoteModule: false, // turn off remote
-			preload: path.join(__dirname, "preload.js") // use a preload script
-	    }
-  	})
+function createWindow() {
+  win = new BrowserWindow({
+    width: 1000,
+    height: 800,
+    webPreferences: {
+      nodeIntegration: true, // is default value after Electron v5
+      contextIsolation: false, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
+      preload: path.join(__dirname, "preload.js") // use a preload script
+    }
+  })
 
   win.loadFile('../statics/index.html')
   win.once('ready-to-show', () => {
-      win.show();
-      win.webContents.openDevTools();
-      
+    win.show();
+    win.webContents.openDevTools();
+
   });
   win.on('show', () => {
-  setTimeout(() => {
-    win.focus();
-  }, 200);
-});
-  
+    setTimeout(() => {
+      win.focus();
+    }, 200);
+  });
+
 }
 
 const testDataFileInit = `
@@ -67,14 +67,14 @@ module.exports = {testData}
 */
 
 
-let start = ()=>{
+let start = () => {
   TransferState.setup(ipcMain);
 
   app.whenReady().then(() => {
     createWindow()
 
     app.on('activate', function () {
-      if (BrowserWindow.getAllWindows().length === 0){
+      if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
       }
     })
@@ -84,12 +84,12 @@ let start = ()=>{
 }
 
 fs.exists("testData.js", function (exists) {
-  if(exists){
+  if (exists) {
     start();
   }
-  else{
-    fs.writeFile("testData.js", testDataFileInit, {flag: 'wx'}, function (err, data){ 
-        start();
+  else {
+    fs.writeFile("testData.js", testDataFileInit, { flag: 'wx' }, function (err, data) {
+      start();
     })
   }
 });
@@ -98,8 +98,8 @@ fs.exists("testData.js", function (exists) {
 
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin'){
-  	app.quit()
+  if (process.platform !== 'darwin') {
+    app.quit()
   }
 })
 
@@ -121,7 +121,7 @@ app.on('window-all-closed', function () {
 //   }).catch((err) => {console.err(err)}).then(response => {
 
 //     event.reply('displayMessage',response.data)
-    
+
 
 //   }).catch(err => console.log);
 
@@ -134,7 +134,7 @@ ipcMain.on('validateTagAccess', TagValidator.validateTag)
 
 
 // ipcMain.on('validateTagAccess', (event, data)=>{
-  
+
 
 // })
 

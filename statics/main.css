@@ -1,172 +1,150 @@
-
 body {
-	padding:0;
-	margin:0;
+	padding: 0;
+	margin: 0;
 }
 
 .rootContainer {
-	width:100%;
-	height:100vh;
-	overflow-y:hidden;
-	overflow-x:hidden;
+	width: 100%;
+	height: 100vh;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
+
 .contentContainer {
-	width:inherit;
-	height:inherit;
+	width: inherit;
+	height: inherit;
 }
+
 .InputContainer {
 	border: 1px solid black;
-	flex-grow:1;
-	margin:1em;
-	margin-top:1em;
-	display:flex;
+	flex-grow: 1;
+	margin: 1em;
+	margin-top: 1em;
+	display: flex;
 	flex-direction: column;
-	position:relative;
-	
+	position: relative;
+
 }
+
 .InputBlock {
-	background-color:grey;
-	opacity:.4;
-	height:100%;
-	width:100%;
-	position:absolute;
-	top:0;
-	left:0;
-	z-index:5;
-	
+	background-color: grey;
+	opacity: .4;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 5;
+
 }
 
 .row {
-	display:flex;
-	justify-content:space-between;
-	width:inherit;
-	
-	
+	display: flex;
+	justify-content: space-between;
+	width: inherit;
+
+
 }
+
 .inputRow {
-	height:40vh;
-	max-width:100%;
-	display:flex;
-	flex-direction:row;
-	justify-content:space-between;
+	height: 40vh;
+	max-width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
+
 .headerRow {
-	justify-content:center;
-	width:90%;
+	justify-content: center;
+	width: 90%;
 	font-weight: lighter;
-    font-family: courier new;
-    font-size: 2em;
+	font-family: courier new;
+	font-size: 2em;
 }
+
 .SubmitContainer {
-	margin-right:1em;
-	display:flex;
-	flex-direction:column;
-	justify-content:center;
+	margin-right: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .InnerHeader {
-	text-align:center;
-	width:90%;
+	text-align: center;
+	width: 90%;
 	font-weight: lighter;
-    font-family: courier new;
-    font-size: 2em;
+	font-family: courier new;
+	font-size: 2em;
 }
+
 .InnerForm {
-	display:flex;
-	flex-direction:column;
-	padding:1em;
-	max-width:100%;
+	display: flex;
+	flex-direction: column;
+	padding: 1em;
+	max-width: 100%;
 }
 
 .FormInput {
-	margin-bottom:1em;
-	font-size:1em;
+	margin-bottom: 1em;
+	font-size: 1em;
 }
+
 .FormInputRow {
-	display:flex;
-	flex-direction:row;
-	justify-content:center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 	/*padding-bottom:1em;*/
 }
+
 .FormInputRow_Input {
-	flex-grow:1;
+	flex-grow: 1;
 }
 
 .FormInputRow_Divider {
-	margin-left:.5em;
-	margin-right:.5em;
-	font-weight:200;
+	margin-left: .5em;
+	margin-right: .5em;
+	font-weight: 200;
 }
 
 
 .ValidationContainer_Unconnected {
-	text-align:center;
-	color:red;
+	text-align: center;
+	color: red;
 }
 
 .ValidationContainer_Connected {
-	text-align:center;
-	color:green;
+	text-align: center;
+	color: green;
 }
 
 .LoadingBarOuter {
-	height:1em;
-	background-color:#bfbfbf;
-	margin:1em;
-	border:1px dotted black;
+	height: 1em;
+	background-color: #bfbfbf;
+	margin: 1em;
+	border: 1px dotted black;
 
 }
 
 .LoadingBarInner {
-	height:100%;
+	height: 100%;
 	/*width:50%;*/
-	background-color:teal;
+	background-color: teal;
 }
 
 
 
 .ProgressContainer {
-	display:flex;
-	flex-direction:row;
-	width:100%;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
 	/*background-color:red;*/
 	justify-content: center
-
 }
+
 .Progress {
-	display:flex;
-	flex-direction:column;
-	width:40%;
-	margin:1em;
-	
+	display: flex;
+	flex-direction: column;
+	width: 40%;
+	margin: 1em;
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

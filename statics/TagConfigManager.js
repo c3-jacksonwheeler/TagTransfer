@@ -1,7 +1,7 @@
 
 class TagConfigManager {
-	constructor(which){
-		if(which != "to" && which != "from"){
+	constructor(which) {
+		if (which != "to" && which != "from") {
 			throw "Invalid TagConfigManager constructor, " + which + " expecting 'to' or 'from'"
 		}
 		this.isTo = (which == 'to')
@@ -21,8 +21,8 @@ class TagConfigManager {
 		this.validateContainer = $(`#${this.prefix}_validate`);
 
 		this.hostValue = this.hostInput.val()
-		this.hostInput.change(()=>{
-			if(this.locked){
+		this.hostInput.change(() => {
+			if (this.locked) {
 				return;
 			}
 			let host = this.hostInput.val()
@@ -32,32 +32,32 @@ class TagConfigManager {
 			this.performValidation();
 		});
 
-		this.tenantValue = this.tenantInput.val() 
-		this.tenantInput.change(()=>{
-			if(this.locked){
+		this.tenantValue = this.tenantInput.val()
+		this.tenantInput.change(() => {
+			if (this.locked) {
 				return;
 			}
-			let tenant = this.tenantInput.val() 
+			let tenant = this.tenantInput.val()
 			this.tenantValue = tenant;
 			console.log("Tenant: ", tenant);
 			this.performValidation();
 		});
-		this.tagValue = this.tagInput.val() 
-		this.tagInput.change(()=>{
-			if(this.locked){
+		this.tagValue = this.tagInput.val()
+		this.tagInput.change(() => {
+			if (this.locked) {
 				return;
 			}
-			let tag = this.tagInput.val() 
+			let tag = this.tagInput.val()
 			this.tagValue = tag;
 			console.log("Tag: ", tag);
 			this.performValidation();
 		});
-		this.tokenValue = this.tokenInput.val() 
-		this.tokenInput.change(()=>{
-			if(this.locked){
+		this.tokenValue = this.tokenInput.val()
+		this.tokenInput.change(() => {
+			if (this.locked) {
 				return;
 			}
-			let token = this.tokenInput.val() 
+			let token = this.tokenInput.val()
 			this.tokenValue = token
 			console.log("Token: ", token);
 			this.performValidation();
@@ -90,16 +90,16 @@ class TagConfigManager {
 
 
 	}
-	getConfig(){
+	getConfig() {
 		return {
 			host: this.hostValue,
 			tenant: this.tenantValue,
 			tag: this.tagValue,
 			token: this.tokenValue,
-			which:this.prefix
+			which: this.prefix
 		}
 	}
-	lock(){
+	lock() {
 		this.locked = true;
 
 		this.hostInput.prop('disabled', true);
@@ -110,7 +110,7 @@ class TagConfigManager {
 		$(`#${this.prefix}InputBlock`).show()
 
 	}
-	unlock(){
+	unlock() {
 		this.locked = false;
 
 		this.hostInput.prop('disabled', false);
@@ -120,7 +120,7 @@ class TagConfigManager {
 
 		$(`#${this.prefix}InputBlock`).hide()
 	}
-	assumeConfig(data){
+	assumeConfig(data) {
 		// if(this.locked){
 		// 	return;
 		// }
@@ -138,17 +138,17 @@ class TagConfigManager {
 
 
 
-		if(data.connected){
+		if (data.connected) {
 			let conn = "Connected"
 			this.validateContainer[0].innerHTML = `<div class="ValidationContainer_Connected">${conn}</div>`
 		}
-		else{
+		else {
 			let conn = data.connectionStatus.code
 			this.validateContainer[0].innerHTML = `<div class="ValidationContainer_Unconnected">${conn}</div>`
 
 		}
 
-		
+
 
 
 
@@ -164,16 +164,16 @@ class TagConfigManager {
 	// 	}
 	// }
 
-	performValidation(){
-		if(this.locked){
+	performValidation() {
+		if (this.locked) {
 			return;
 		}
-		if(this.tokenValue && this.hostValue && this.tagValue && this.tenantValue){
+		if (this.tokenValue && this.hostValue && this.tagValue && this.tenantValue) {
 			//attempt login
 			// console.log("Validating Tag Access for - ", this.prefix)
 			let config = this.getConfig();
 			// config.respondTo = 'validationResponse_' + this.prefix
-			ipcRenderer.send('submitTagConfig',config)
+			ipcRenderer.send('submitTagConfig', config)
 
 
 		}
