@@ -6,8 +6,7 @@
 2. npm install
 3. npm run start
 
-
-<img width="988" alt="Screen Shot 2021-12-06 at 2 20 01 PM" src="https://user-images.githubusercontent.com/73851169/144932047-6c1e9050-bc13-4d01-a4f4-03bc2ff68305.png">
+<img width="988" alt="Screen Shot 2021-12-06 at 2 20 01 PM" src="https://user-images.githubusercontent.com/73851169/144932187-e4dd0384-e0a8-40e3-8871-b6e065bf97d2.png">
 
 ## NOTE:
 This application should only be used for pulling data to testing environments.
