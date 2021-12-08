@@ -1,5 +1,9 @@
 # TagTransfer
 
+<h2 style="font-size:8em">
+☁️</br>
+↕️</br>
+💻</h2>
 
 ## To setup
 1. clone the repo locally
