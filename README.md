@@ -25,9 +25,13 @@ Skip the first (n) Types before beginning a transfer (useful for restarting afte
 
 ### Type Blacklist
 Provide a custom blacklist (which is appended to the internal blacklist)
+The internal blacklist will do its best to filter out unnecessary/unsafe types. (Users, auth tokens, Parametric types, etc.)
 
 ### Type Whitelist 
 Provide a custom whitelist (which is applied after the internal blacklist and custom blacklist)
 
 ### Dry Run
 Perform the fetches, but never merge anything
+
+# Contributions
+Please feel free to contribute to this project! (PRs to the main branch)
