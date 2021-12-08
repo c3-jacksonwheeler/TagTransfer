@@ -35,3 +35,23 @@ Perform the fetches, but never merge anything
 
 # Contributions
 Please feel free to contribute to this project! (PRs to the main branch)
+
+## Project File/Directory guide
+```
+TagTransfer
+  src/              -- NodeJS+Electron backend code
+    BlackList.js        -- Provide type blacklist
+    index.js            -- main entrypoint
+    preload.js          -- not currently used (electron related)
+    TagConnection.js    -- Connect to and perform API requests on a C3 Tag
+    TagValidator.js     -- Validate connection to a Tag (Used by TagConnection)
+    TagTransfer.js      -- Main transfer code exists here, called by TransferState
+    TransferState.js    -- Main communications between the frontend code exists here, initiator of TagTransfer
+  
+  statics/          -- Frontend code
+    index.html
+    main.css
+    main.js             -- frontend code entrypoint
+    TagConfigManager.js -- Handle TagConfig frontend<->backend comms
+    Transfer.js         -- Handles Transfer settings and transfer progress stats
+```
