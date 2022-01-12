@@ -38,6 +38,13 @@ window.onload = function () {
 
 	// console.log("abc")
 	ipcRenderer.send('requestState', {})
+	ipcRenderer.send('requestConnectionUpdate', {})
+
+
+	window.setInterval(()=>{
+		ipcRenderer.send('requestConnectionUpdate', {})
+	},20000)
+	
 
 
 

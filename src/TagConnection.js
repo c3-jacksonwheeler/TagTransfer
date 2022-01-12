@@ -56,14 +56,22 @@ class TagConnection {
 
 	}
 
-	fetch(type, limit = 2000, offset = 0) {
+	fetch(type, options, limit = 2000, offset = 0) {
 		if (!this.connected || !this.configSet) {
 
 			throw "Not connected yet"
 		}
 		return new Promise((resolve, reject) => {
+			
+			console.log(options);
+			
+			let fetchSpec = { "limit": limit, "offset": offset }
+			
+			if(options.isExtendable){
+				fetchSpec.filter = `typeIdent == '${options.typeIdent}'`;
+			}
 
-			this.performRequest(type, 'fetch', { "spec": { "limit": limit, "offset": offset } }).then((results) => {
+			this.performRequest(type, 'fetch', { "spec": fetchSpec }).then((results) => {
 				// console.log("FETCHED", results);
 				resolve(results.data)
 			}).catch((err) => {

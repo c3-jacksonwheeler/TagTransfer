@@ -42,6 +42,10 @@ class TransferState {
 		}
 
 	}
+	static receiveConnectionUpdate(event, data){
+		TransferState.toConn.validateConnection()
+		TransferState.fromConn.validateConnection()
+	}
 	static receiveTagConfig(event, config) {
 		console.log("Receive Tag Config: ", config)
 
@@ -79,6 +83,7 @@ class TransferState {
 
 	static startListeners() {
 
+		ipcMain.on('requestConnectionUpdate', TransferState.receiveConnectionUpdate)
 
 		ipcMain.on('submitTagConfig', TransferState.receiveTagConfig)
 

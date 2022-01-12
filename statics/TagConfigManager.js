@@ -143,7 +143,7 @@ class TagConfigManager {
 			this.validateContainer[0].innerHTML = `<div class="ValidationContainer_Connected">${conn}</div>`
 		}
 		else {
-			let conn = data.connectionStatus.code
+			let conn = data.connectionStatus.code || "Unconnected"
 			this.validateContainer[0].innerHTML = `<div class="ValidationContainer_Unconnected">${conn}</div>`
 
 		}

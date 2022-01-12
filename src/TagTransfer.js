@@ -16,13 +16,14 @@ let testingWhitelist = []
 const batchSize = 10000;
 const tickDelay = 50;
 class TransferManager {
-	constructor(TransferState, startFrom=0, typesToFetch, fromConn, toConn, useDryRun=false, callback) {
+	constructor(TransferState, startFrom=0, typesToFetch, typeInfoMap, fromConn, toConn, useDryRun=false, callback) {
 
 		this.TransferState = TransferState;
 
 		this.useDryRun = useDryRun;
 		this.callback = callback;
 		this.typesToFetch = typesToFetch;
+		this.typeInfoMap = typeInfoMap;
 		this.fromConn = fromConn;
 		this.toConn = toConn;
 
@@ -111,7 +112,7 @@ class TransferManager {
 	fetchBatch() {
 		console.log("\nFetch Batch | Type: ", this.currentType, " batchNum: ", this.batch, ` status: ${this.typeIndex + 1} / ${this.typesToFetch.length}`)
 		return new Promise((resolve, reject) => {
-			this.fromConn.fetch(this.currentType, batchSize, this.batch * batchSize).then((data) => {
+			this.fromConn.fetch(this.currentType, this.typeInfoMap.get(this.currentType), batchSize, this.batch * batchSize).then((data) => {
 				console.log(this.currentType, " : ", data.count)
 				let objs = data.objs || []
 
@@ -240,12 +241,28 @@ class TagTransfer {
 				function validate(type){
 					return !(type.isParametric()); // Parametric types cannot be fetched without a 500 error
 				}
+				function computeExtraInfo(type){
+					var extraInfo = {};
+					extraInfo.isExtendable = !!type.getTypeIdent;
+					extraInfo.typeIdent = extraInfo.isExtendable ? type.getTypeIdent() : undefined;
+
+
+					return extraInfo
+				}
 
 				var typesToProcess = ${typeStr};
 				var out = [];
 				for(var i = 0; i < typesToProcess.length; i++){
-					out.push(validate(typesToProcess[i]));
+					var isValid = validate(typesToProcess[i])
+					if(isValid){
+						out.push(computeExtraInfo(typesToProcess[i]))
+					}
+					else{
+						out.push(false)
+					}
+					
 				}
+
 				out;
 			`
 			console.log("Sending Validation Request to from server")
@@ -257,16 +274,25 @@ class TagTransfer {
 				// console.log("VALIDATED", response)
 
 				let validationResults = JSON.parse(response.data)
-
+				
+				let typeInfoMap = new Map();
+				
 				let typesToFetch = _.filter(typesToProcess, (type, i) => {
-					return validationResults[i];
+					let validationResult = validationResults[i]
+					if(validationResult){
+						//save extra info into typeInfoMapa
+						typeInfoMap.set(type,validationResult);
+						return true;
+					}
+					return false;
 				})
+				
 				if (useTestingWhitelist) {
 					typesToFetch = _.intersection(typesToFetch, testingWhitelist)
 				}
 				this.step = "Transferring"
 				this.TransferState.pushState()
-				this.manager = new TransferManager(this.TransferState, this.config.startFrom, typesToFetch, this.fromConn, this.toConn, this.config.useDryRun,() => {
+				this.manager = new TransferManager(this.TransferState, this.config.startFrom, typesToFetch, typeInfoMap, this.fromConn, this.toConn, this.config.useDryRun,() => {
 					this.step = "Complete"
 					console.log("Done!")
 					this.done = true;
