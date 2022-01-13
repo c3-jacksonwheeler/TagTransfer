@@ -9,6 +9,7 @@
 1. clone the repo locally
 2. npm install
 3. npm run start
+4. Important! Pause your queues in the destination environment before starting the Transfer!
 
 <img width="988" alt="Screen Shot 2021-12-06 at 2 20 01 PM" src="https://user-images.githubusercontent.com/73851169/144932187-e4dd0384-e0a8-40e3-8871-b6e065bf97d2.png">
 
