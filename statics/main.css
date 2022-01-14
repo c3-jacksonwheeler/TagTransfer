@@ -149,17 +149,15 @@ body {
 
 }
 
-
 .TransferOptionsContainer {
-	width:100%;
-	display:flex;
+	width: 100%;
+	display: flex;
 	justify-content: center;
-	margin:1em
-
+	margin: 1em
 }
-.TransferOptions {
-	padding:1em;
-	border:1px dashed black;
-	width:40%
 
+.TransferOptions {
+	padding: 1em;
+	border: 1px dashed black;
+	width: 40%
 }

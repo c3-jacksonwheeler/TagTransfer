@@ -63,33 +63,8 @@ class TagConfigManager {
 			this.performValidation();
 		});
 
-
-
-
-		// ipcRenderer.on('validationResponse_' + this.prefix, (event, data)=>{
-		// 	if(this.locked){
-		// 		return;
-		// 	}
-		// 	if(data.status == "bad"){
-		// 		this.connectedStatus = false;
-		// 	}
-		// 	else{
-		// 		this.connectedStatus = true;
-		// 	}
-
-		// 	let conn = this.connectedStatus?"Connected":("Unconnected : " +  data.statusText)
-		// 	this.validateContainer[0].innerHTML = `<div class="ValidationContainer_${conn}">${conn}</div>`
-
-
-
-		// 	console.log(data);
-		// 	document.getElementById("con").innerHTML = JSON.stringify(data,undefined,3)
-
-		// })
-
-
-
 	}
+
 	getConfig() {
 		return {
 			host: this.hostValue,
@@ -99,6 +74,7 @@ class TagConfigManager {
 			which: this.prefix
 		}
 	}
+
 	lock() {
 		this.locked = true;
 
@@ -110,6 +86,7 @@ class TagConfigManager {
 		$(`#${this.prefix}InputBlock`).show()
 
 	}
+
 	unlock() {
 		this.locked = false;
 
@@ -120,10 +97,11 @@ class TagConfigManager {
 
 		$(`#${this.prefix}InputBlock`).hide()
 	}
+
 	assumeConfig(data) {
-		// if(this.locked){
-		// 	return;
-		// }
+		// Server controls the state, adopt the servers current configuration for this component
+		// Transfer.js calls lock/unlock according to transfer state
+
 		this.hostInput.val(data.host);
 		this.hostValue = data.host;
 
@@ -148,31 +126,15 @@ class TagConfigManager {
 
 		}
 
-
-
-
-
-		// console.log(data);
-		// document.getElementById("con").innerHTML = JSON.stringify(data,undefined,3)
-
-
-		// this.performValidation();
 	}
-	// updateConnection(conn){
-	// 	if(conn == undefined){
-	// 		this.validateContainer[0].innerHTML = ``
-	// 	}
-	// }
-
+	
 	performValidation() {
 		if (this.locked) {
 			return;
 		}
 		if (this.tokenValue && this.hostValue && this.tagValue && this.tenantValue) {
-			//attempt login
-			// console.log("Validating Tag Access for - ", this.prefix)
+			
 			let config = this.getConfig();
-			// config.respondTo = 'validationResponse_' + this.prefix
 			ipcRenderer.send('submitTagConfig', config)
 
 

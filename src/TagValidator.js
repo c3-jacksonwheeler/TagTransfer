@@ -51,7 +51,6 @@ response.statusText= "Unauthorized"
 
 */
 
-
 class TagValidator {
 	constructor(data) {
 		console.log("Validating Tag: ", data);
@@ -76,7 +75,7 @@ class TagValidator {
 
 
 	}
-
+	// Magic http response validation based on presense of certain fields in the response (Sorry)
 	static parseValidationResponse(res, resolve, requestUrl) {
 
 		console.log(Object.keys(res))
@@ -96,6 +95,7 @@ class TagValidator {
 					if(res.request.res.responseUrl != requestUrl){
 						// Okta redirect (or other redirect)
 						resolve({ status: "bad", code: "Expired or incorrect AuthToken" })
+						return;
 					}
 				}
 				resolve({ status: "good", code: res.status })

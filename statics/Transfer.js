@@ -1,39 +1,11 @@
 class Transfer {
 	constructor() {
-		//loc
-		// this.done = false;
-
-		// //lock controls
-		// tagConfigs[0].lock()
-		// tagConfigs[1].lock()
-
-		// ipcRenderer.send('beginTransfer',
-		// {
-		// 	configs: [tagConfigs[0].getConfig(), tagConfigs[1].getConfig()]
-		// })
-
-
 	}
-	// onComplete(){
-
-	// 	tagConfigs[0].unlock()
-	// 	tagConfigs[1].unlock()
-	// 	this.done = true;//allow singleton instance to be overwritten
-	// }
-
-	// receiveTransferInfo(event, data){
-	// 	console.log("Transfer", data);
-
-
-
-	// }
-
+	
 	static updateFromState(transferState) {
+		// Server has given us an update on the Transfer Status
 		console.log("TransferState: ", transferState)
 		Transfer.transferStatusContainer = $("#TransferStatusContainer")
-
-
-
 
 		Transfer.inProgress = transferState.inProgress;
 		Transfer.readyToStart = transferState.readyToStart;
@@ -138,24 +110,16 @@ class Transfer {
 			`
 
 			}
-
-
 		}
-
-
-
-
 	}
-
-
 
 	static requestTransfer() {
 
 		if (Transfer.readyToStart) {
 			console.log("Sending start request to main")
-			//a transfer is already ongoing
+		
 
-			//get options
+			//get options from UI
 			let startFrom = Number($("#Transfer_startFromIndex").val())
 			let blacklistRaw = $("#Transfer_blacklist").val()
 			let blacklist = blacklistRaw.split(",").map(v => v.trim()).filter((v) => { if (v.length) { return v } })
@@ -166,8 +130,6 @@ class Transfer {
 			if (useWhitelist) {
 				let whitelistRaw = $("#Transfer_whitelist").val()
 				whitelist = whitelistRaw.split(",").map(v => v.trim()).filter((v) => { if (v.length) { return v } })
-
-
 			}
 
 			let useDryRun = $("#Transfer_useDryRun").is(":checked");
@@ -175,18 +137,12 @@ class Transfer {
 			console.log({ startFrom, blacklist, useWhitelist, whitelist, useDryRun })
 
 
-
+			// Kick off the transfer request, but Server has the ability to ignore if it wants, check out src/TransferState.js
 			ipcRenderer.send('requestTransfer', { startFrom, blacklist, useWhitelist, whitelist, useDryRun })
 		}
 
 	}
-	// static receiveTransferInformation(event, data){
-	// 	if(Transfer.ist){
-	// 		//forward to instance
-	// 		Transfer.inst.receiveTransferInfo(event,data)
-	// 	}
-
-	// }
+	
 
 }
 

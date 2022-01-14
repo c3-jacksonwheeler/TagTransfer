@@ -60,11 +60,6 @@ let testData = {
 }
 module.exports = {testData}
 `
-/*
-
-
-
-*/
 
 
 let start = () => {
@@ -83,6 +78,8 @@ let start = () => {
 
 }
 
+// To avoid checking this into the repo, generate this file dynamically.
+// This is a convenience feature, just put credentials and config into testData.js to avoid having to re-enter a bunch
 fs.exists("testData.js", function (exists) {
   if (exists) {
     start();
@@ -95,8 +92,6 @@ fs.exists("testData.js", function (exists) {
 });
 
 
-
-
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -104,49 +99,8 @@ app.on('window-all-closed', function () {
 })
 
 
-
-
-
-// ipcMain.on("requestData", (event, data)=>{
-
-//   console.log(data);
-
-
-//   axios.post(data.url, 
-//     {},
-//     {
-//             headers: {
-//                 Cookie: `c3auth=30330a4d508be7e1748acbb0b0fabbebfcd94853635951157cf2a0e19f183eef1811; c3tenant=nypa; c3tag=prod`
-//     }
-//   }).catch((err) => {console.err(err)}).then(response => {
-
-//     event.reply('displayMessage',response.data)
-
-
-//   }).catch(err => console.log);
-
-
-
-// })
-
-
 ipcMain.on('validateTagAccess', TagValidator.validateTag)
 
 
-// ipcMain.on('validateTagAccess', (event, data)=>{
-
-
-// })
-
-
-
-
+// Don't use from the UI, requests should go through TransferState unless testing
 ipcMain.on('beginTransfer', TagTransfer.beginTransfer)
-
-
-
-
-
-
-
-

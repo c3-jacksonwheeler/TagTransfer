@@ -1,61 +1,33 @@
 const { ipcRenderer } = require('electron')
 
 
-// window.setTimeout(()=>{
-// 	ipcRenderer.sendSync('requestData', {url})
-
-// },1000)
-
-
-// ipcRenderer.on('displayMessage', (event, data)=>{
-// 	console.log(data);
-// 	document.getElementById("con").innerHTML = JSON.stringify(data,undefined,3)
-
-// })
-
-
 window.onload = function () {
+	// Set up From and To components
 	window.tagConfigs = { from: new TagConfigManager("from"), to: new TagConfigManager("to") }
 
-
-	// ipcRenderer.on('transferInfo', Transfer.receiveTransferInformation)
-
-
-	// dummyDataStart();
+	// When the server sends us an update on the Transfer Status, perform the following..
 	ipcRenderer.on('respondState', (event, state) => {
 		console.log(state)
 		window.tagConfigs.from.assumeConfig(state.connection.from)
 		window.tagConfigs.to.assumeConfig(state.connection.to)
 
-
 		Transfer.updateFromState(state.transfer)
 
-
-		// window.tagConfigs.from.updateConnection(state.from.conn)
-		// window.tagConfigs.to.updateConnection(state.to.conn)
-
 	})
-
-	// console.log("abc")
+	
+	// Request a state update from the server to populate the UI on initial load
 	ipcRenderer.send('requestState', {})
 	ipcRenderer.send('requestConnectionUpdate', {})
 
-
+	// Keep checking connection to the To/From environments to display in the UI
 	window.setInterval(()=>{
 		ipcRenderer.send('requestConnectionUpdate', {})
 	},20000)
-	
-
-
 
 	$("#transferStart").click(() => {
 
 		Transfer.requestTransfer();
 
-
 	})
 
 }
-
-
-

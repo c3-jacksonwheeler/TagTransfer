@@ -1,2 +1,1 @@
-// let $ = require('jquery');
-//   win.$ = $;
+// Hi There

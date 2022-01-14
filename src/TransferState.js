@@ -3,7 +3,6 @@ const { TagConnection } = require('./TagConnection.js')
 const { TagTransfer } = require('./TagTransfer.js')
 
 const startWithTestData = true;
-// console.log(testData)
 
 //static 
 class TransferState {
