@@ -5,11 +5,17 @@
 ↕️</br>
 💻</h2>
 
+The TagTransfer tool is a utility to transfer instances of types between different Tags. It does this by dynamically retreiving a list of fetchable Persistable types from each Tag. It then further refines these types through an internal blacklist, as well as user controlled configurations. The tool fetches these instances in batches, while updating the user on its Transfer status.
+
+### Here is an example use-case/workflow that the TagTransfer program was designed for.
+As a DSE/FDE working on customer A, I need to make some changes to the UI. I've stood up a local docker environment, however I don't have any data locally, which makes it impossible to test my changes. Customer A has had several custom configurations to the data model on top of what was in base. My options are to either prov and bundle to a developer environment of Customer A (this sometimes takes upwards of 1/2 hour for each change!), or to go through the laborious process of manually stepping through all the types required to test my changes locally(along with all the necessary type relations up to the org level!). By using the TagTransfer program, I can essentially "copy" all the types in customer A's developer or QA environment to my own environment, allowing me to develop locally and use UI-IDE.
+
 ## To setup
 1. clone the repo locally
 2. npm install
 3. npm run start
 4. Important! Pause your queues in the destination environment before starting the Transfer!
+5. Measurement types are internally blacklisted, if you need measurements you can remove the type from BlackList.js (this may increase transfer times significantly)
 
 <img width="988" alt="Screen Shot 2021-12-06 at 2 20 01 PM" src="https://user-images.githubusercontent.com/73851169/144932187-e4dd0384-e0a8-40e3-8871-b6e065bf97d2.png">
 
