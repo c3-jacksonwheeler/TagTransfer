@@ -2,7 +2,7 @@
   "name": "tagtransfer",
   "version": "1.0.0",
   "description": "Transfer Data between C3 Tags",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "start": "electron ./src",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,9 @@
   "author": "Jackson Wheeler",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^15.3.0"
+    "electron": "^15.3.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-reloader": "^1.2.3"
   },
   "dependencies": {
     "axios": "^0.24.0",

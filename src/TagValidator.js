@@ -117,7 +117,17 @@ class TagValidator {
 
 			let url = `${host}/api/1/${data.tenant}/${data.tag}/Console?action=init`
 			let headers = {
-				Cookie: `c3auth=${data.token}; c3tenant=${data.tenant}; c3tag=${data.tag}`
+				Cookie: `c3tenant=${data.tenant}; c3tag=${data.tag}`
+			}
+			if (data.token || data.token == "" || data.token == "<c3Auth Token>"){
+				const token = Buffer.from(`${data.username}:${data.password}`, 'UTF-8').toString('base64');
+				headers.Authorization = `Basic ${token}`;
+				// headers.auth = {
+				// 	username: data.username,
+				// 	password: data.password
+				// }
+			} else {
+				headers.Cookie += `; c3auth=${data.token}`
 			}
 
 			console.log("Sending request to - ", url)
@@ -131,7 +141,7 @@ class TagValidator {
 
 				}).catch((err) => {
 					// TagValidator.parseValidationResponse(err, resolve)
-					// console.log(err)
+					console.log(err)
 					// resolve({status:"bad3"})
 				});
 

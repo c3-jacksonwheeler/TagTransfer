@@ -161,3 +161,8 @@ body {
 	border: 1px dashed black;
 	width: 40%
 }
+
+.user-pass {
+	margin: auto 5px;
+	float: left;
+}

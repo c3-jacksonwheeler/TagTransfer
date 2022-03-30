@@ -17,6 +17,8 @@ class TagConfigManager {
 		this.tenantInput = $(`#${this.prefix}_tenant`);
 		this.tagInput = $(`#${this.prefix}_tag`);
 		this.tokenInput = $(`#${this.prefix}_token`);
+		this.usernameInput = $(`#${this.prefix}_username`);
+		this.passwordInput = $(`#${this.prefix}_password`);
 
 		this.validateContainer = $(`#${this.prefix}_validate`);
 
@@ -62,6 +64,27 @@ class TagConfigManager {
 			console.log("Token: ", token);
 			this.performValidation();
 		});
+		this.usernameValue = this.usernameInput.val();
+		this.usernameInput.change(()=>{
+			if (this.locked) {
+				return;
+			}
+			let username = this.usernameInput.val();
+			this.usernameValue = username;
+			console.log('Username: ', username);
+			this.performValidation();
+		});
+		this.passwordValue = this.usernameInput.val();
+		this.passwordInput.change(()=>{
+			if (this.locked) {
+				return;
+			}
+			let password = this.passwordInput.val();
+			this.passwordValue = password;
+			console.log('Password: ', password);
+			this.performValidation();
+		});
+
 
 	}
 
@@ -71,6 +94,8 @@ class TagConfigManager {
 			tenant: this.tenantValue,
 			tag: this.tagValue,
 			token: this.tokenValue,
+			username: this.usernameValue,
+			password: this.passwordValue,
 			which: this.prefix
 		}
 	}
@@ -82,6 +107,8 @@ class TagConfigManager {
 		this.tenantInput.prop('disabled', true);
 		this.tagInput.prop('disabled', true);
 		this.tokenInput.prop('disabled', true);
+		this.passwordInput.prop('disabled', true);
+		this.usernameInput.prop('disabled', true);
 
 		$(`#${this.prefix}InputBlock`).show()
 
@@ -94,6 +121,9 @@ class TagConfigManager {
 		this.tenantInput.prop('disabled', false);
 		this.tagInput.prop('disabled', false);
 		this.tokenInput.prop('disabled', false);
+		this.passwordInput.prop('disabled', false);
+		this.usernameInput.prop('disabled', false);
+
 
 		$(`#${this.prefix}InputBlock`).hide()
 	}
@@ -114,6 +144,12 @@ class TagConfigManager {
 		this.tokenInput.val(data.token);
 		this.tokenValue = data.token;
 
+		this.usernameInput.val(data.username);
+		this.usernameValue = data.username;
+
+		this.passwordInput.val(data.password);
+		this.passwordValue = data.password;
+
 
 
 		if (data.connected) {
@@ -132,11 +168,10 @@ class TagConfigManager {
 		if (this.locked) {
 			return;
 		}
-		if (this.tokenValue && this.hostValue && this.tagValue && this.tenantValue) {
+		if ((this.tokenValue || (this.usernameValue && this.passwordValue)) && this.hostValue && this.tagValue && this.tenantValue) {
 			
 			let config = this.getConfig();
 			ipcRenderer.send('submitTagConfig', config)
-
 
 		}
 	}
