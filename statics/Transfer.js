@@ -1,4 +1,11 @@
+// const { ipcRenderer } = require("electron");
+
 class Transfer {
+	static readyToStart;
+	static inProgress;
+	static transferStatusContainer;
+	static loadingBarDiv;
+
 	constructor() {
 	}
 	
@@ -94,12 +101,13 @@ class Transfer {
 							
 						</div>
 					</div>
-					<button id="transferStart" onclick="Transfer.requestTransfer()">Begin Transfer!</button>
+					<button id="gatherTypes" onclick="Transfer.requestTypeGather()">Gather Type List</button>
 					
-
 				</div>
 			`
 			}
+      //transferStart
+
 			else {
 
 				Transfer.transferStatusContainer[0].innerHTML = `
@@ -110,6 +118,30 @@ class Transfer {
 			`
 
 			}
+		}
+	}
+
+	static requestTypeGather() {
+
+		if (Transfer.readyToStart) {
+			//get options from UI
+			let startFrom = Number($("#Transfer_startFromIndex").val())
+			let blacklistRaw = $("#Transfer_blacklist").val()
+			let blacklist = blacklistRaw.split(",").map(v => v.trim()).filter((v) => { if (v.length) { return v } })
+
+			let useWhitelist = $("#Transfer_useWhitelist").is(":checked");
+
+			let whitelist = undefined;
+			if (useWhitelist) {
+				let whitelistRaw = $("#Transfer_whitelist").val()
+				whitelist = whitelistRaw.split(",").map(v => v.trim()).filter((v) => { if (v.length) { return v } })
+			}
+
+			let useDryRun = $("#Transfer_useDryRun").is(":checked");
+
+			console.log({ startFrom, blacklist, useWhitelist, whitelist, useDryRun })
+			
+			ipcRenderer.send("requestTypelist", { blacklist, useWhitelist, whitelist });
 		}
 	}
 

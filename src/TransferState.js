@@ -7,6 +7,16 @@ const startWithTestData = true;
 //static 
 class TransferState {
 
+	static toConn; // "TO" connection
+	static fromConn; // "FROM" connection
+	static nextReplyEvent;
+
+	static ipcMain; // the inter-process communication variable
+
+	// Stateful variables: 
+	static isTransfering; // whether the application is transferring information
+	
+
 	constructor() {
 		throw "Dont instantiate this"
 	}
@@ -23,7 +33,7 @@ class TransferState {
 			details: TagTransfer.getStateDetails()
 		}
 	}
-	static pushState() {
+	static pushState() {	
 		if (TransferState.nextReplyEvent) {
 			TransferState.nextReplyEvent.reply('respondState', TransferState.getState())
 		}
@@ -35,11 +45,17 @@ class TransferState {
 			transfer: TransferState.getTransferState()
 		}
 	}
+
+  static receiveTypelistRequest(event, data){
+    if (!TransferState.getTransferState().inProgress){
+			TagTransfer.getTypeList();
+		}
+  }
+  
 	static receiveTransferRequest(event, data) {
 		if (TransferState.getTransferState().readyToStart) {
 			TagTransfer.beginTransfer(TransferState, data)
 		}
-
 	}
 	static receiveConnectionUpdate(event, data){
 		TransferState.toConn.validateConnection()
@@ -64,33 +80,34 @@ class TransferState {
 	}
 
 	static setup() {
-		console.log("setup")
-		const { testData } = require("../testData.js")
+		console.log("setup");
+		const { testData } = require("../testData2.js");
 
 		TransferState.ipcMain = ipcMain;
 
-		TransferState.startListeners()
+		TransferState.startListeners();
 
-		TransferState.transfering = false;
-
+		TransferState.isTransfering = false;
 		TransferState.fromConn = new TagConnection(startWithTestData ? testData.fromConfig : {}, TransferState);
 		TransferState.toConn = new TagConnection(startWithTestData ? testData.toConfig : {}, TransferState);
 
-
-
+		TagTransfer.initiateTransferObj({fromConn: TransferState.fromConn, toConn: TransferState.fromConn});
 	}
 
 	static startListeners() {
 
-		ipcMain.on('requestConnectionUpdate', TransferState.receiveConnectionUpdate)
+		ipcMain.on('requestConnectionUpdate', TransferState.receiveConnectionUpdate);
 
-		ipcMain.on('submitTagConfig', TransferState.receiveTagConfig)
+		ipcMain.on('submitTagConfig', TransferState.receiveTagConfig);
+
+		//respondTypelistRequest
+		ipcMain.on('requestTypelist', TransferState.receiveTypelistRequest);
 
 		//respondTransferRequest
-		ipcMain.on('requestTransfer', TransferState.receiveTransferRequest)
+		ipcMain.on('requestTransfer', TransferState.receiveTransferRequest);
 
 		//respondConfigState
-		ipcMain.on('requestState', TransferState.sendState)
+		ipcMain.on('requestState', TransferState.sendState);
 
 	}
 

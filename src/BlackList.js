@@ -3,7 +3,6 @@ let Blacklist = {
 	measurements: ['PointMeasurement', 'Measurement', 'RegisterMeasurement', 'BasePhysicalMeasurementSeries', 'MeasurementSeries', 'PhysicalMeasurementSeries', 'MeasurementSeriesStats'],
 	ds: ['MLSerialPipeline', 'MLPipeline', 'MLPipeBase'],
 	mergeProblems: ['TimeZoneUpdater', 'WeatherDataUpdater', 'WeatherDataResult', 'WeatherStation', 'ZipLatLong', 'UnitOfConversion']
-
 }
 
 

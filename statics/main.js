@@ -31,3 +31,31 @@ window.onload = function () {
 	})
 
 }
+
+// function switchAuthType(from) {
+// 	let tmpTxt = '';
+// 	if (from){
+// 		tmpTxt = 'from';
+// 	} else {
+// 		tmpTxt = 'to';
+// 	}
+// 	authDiv = $('#authentication');
+// 	if (authDiv[0].innerHTML.indexOf('AuthToken') > 0){
+// 		authDiv[0].innerHTML = `
+// 		  <p> Username </p>
+// 			<input type="text" class="FormInput" placeholder="BA" id="${tmpText}_username" ></input>
+// 			<p> Password </p>
+// 			<input type="text" class="FormInput" placeholder="BA" id="${tmpText}_password ></input>
+// 		`
+// 	} else {
+		
+// 		authDiv[0].innerHTML = `
+// 			<input type="text" class="FormInput" placeholder="c3 AuthToken 2" id="${tmpTxt}_token">
+// 		`
+// 	}
+
+// 	var tmp = authDiv.val;
+
+// 	var a = 3;
+	
+// }

@@ -20,7 +20,6 @@ class TagConnection {
 		this.TransferState = TransferState;
 		this.updateConfig(config);
 
-
 	}
 	serialize() {
 		return {
@@ -28,7 +27,8 @@ class TagConnection {
 			tenant: this.tenant,
 			tag: this.tag,
 			token: this.token,
-
+			username: this.username,
+			password: this.password,
 			connected: this.connected,
 			connectionStatus: this.connectionStatus
 
@@ -42,10 +42,12 @@ class TagConnection {
 		this.tenant = config.tenant || "";
 		this.tag = config.tag || "";
 		this.token = config.token || "";
+		this.username = config.username || "";
+		this.password = config.password || "";
 		this.connected = false;
 		this.connectionStatus = {}
 
-		if (this.host && this.tenant && this.tag && this.token) {
+		if (this.host && this.tenant && this.tag && (this.token || (this.username && this.password))) {
 			this.configSet = true;
 
 			this.validateConnection();
@@ -64,7 +66,7 @@ class TagConnection {
 		return new Promise((resolve, reject) => {
 			
 			console.log(options);
-			
+			 
 			let fetchSpec = { "limit": limit, "offset": offset }
 			
 			if(options.isExtendable){
@@ -84,7 +86,6 @@ class TagConnection {
 	}
 	mergeBatch(type, objs) {
 		if (!this.connected || !this.configSet) {
-
 			throw "Not connected yet"
 		}
 		return new Promise((resolve, reject) => {
@@ -111,7 +112,6 @@ class TagConnection {
 
 	}
 	validateConnection() {
-
 		TagValidator.validate(this.config).catch((err) => { console.log(this.which, err) }).then((res) => {
 			// console.log(Object.keys(res))
 			this.connectionStatus = res;
@@ -128,10 +128,6 @@ class TagConnection {
 			this.TransferState.pushState()
 
 		});
-
-
-
-
 	}
 }
 module.exports = {

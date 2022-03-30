@@ -7,6 +7,7 @@
 
 <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
 
+</script>
 <body>
 	<div class="rootContainer">
 		<div class="contentContainer">
@@ -25,8 +26,13 @@
 							<div class="FormInputRow_Divider FormInput">:</div>
 							<input class="FormInputRow_Input FormInput" type="text" placeholder="tag" id="from_tag">
 						</div>
-
-						<input type="text" class="FormInput" placeholder="c3 AuthToken" id="from_token">
+						<!-- <button id="toggleAuth" onclick="switchAuthType()">Toggle Authentication Type</button> -->
+						<div id="authentication">
+							<input type="text" class="FormInput" placeholder="c3 AuthToken 2" id="from_token">
+							<p>OR</p>
+							<input type="text" class="FormInput user-pass" placeholder="Username" id="from_username" ></input>
+							<input type="text" class="FormInput user-pass" placeholder="Password" id="from_password" ></input>
+						</div>
 					</div>
 					</br>
 					<div class="ValidationContainer" id="from_validate">
@@ -47,8 +53,12 @@
 							<div class="FormInputRow_Divider FormInput">:</div>
 							<input class="FormInputRow_Input FormInput" type="text" placeholder="tag" id="to_tag">
 						</div>
-
-						<input type="text" class="FormInput" placeholder="c3 AuthToken" id="to_token">
+						<div id="authentication">
+							<input type="text" class="FormInput" placeholder="c3 AuthToken" id="to_token">
+							<p>OR</p>
+								<input type="text" class="FormInput user-pass" placeholder="Username" id="to_username" ></input>
+								<input type="text" class="FormInput user-pass" placeholder="Password" id="to_password" ></input>
+						</div>
 					</div>
 					<div class="ValidationContainer" id="to_validate">
 						<div class="ValidationContainer_Unconnected"></div>
@@ -69,9 +79,9 @@
 </body>
 <script src="TagConfigManager.js"></script>
 <script src="Transfer.js"></script>
-
-<script src="main.js">
-
+<script src="main.js"></script>
+  
 </script>
+
 
 </html>

@@ -1,20 +1,32 @@
+// const { TagTransfer } = require("./TagTransfer");
+
 const {
   app,
   BrowserWindow,
-  ipcMain
+  ipcMain,
+  ipcRenderer
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
 
+
 let win;
+
+const env = process.env.NODE_ENV || 'development';
+
+if(env == 'development') {
+  require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, '../node_modules', '.bin','electron'),
+    hardResetMethod: 'exit'
+  });
+}
 
 
 const axios = require('axios');
 
-const { TagTransfer } = require('./TagTransfer.js')
 const { TagValidator } = require('./TagValidator.js')
-
 const { TransferState } = require('./TransferState.js')
+// const { TagTransfer } = require('./TagTransfer.js')
 
 
 function createWindow() {
@@ -29,7 +41,7 @@ function createWindow() {
     }
   })
 
-  win.loadFile('../statics/index.html')
+  win.loadFile(path.join(__dirname, '../statics/index.html'));
   win.once('ready-to-show', () => {
     win.show();
     win.webContents.openDevTools();
@@ -46,49 +58,52 @@ function createWindow() {
 const testDataFileInit = `
 let testData = {
   fromConfig: {
-    host:"https://<your environment>.c3.ai/",
-    tenant:"<tenant>",
-    tag:"<tag>",
+    host:"http://localhost:8080/",
+    tenant:"fisCda",
+    tag:"dev",
     token:"<c3Auth Token>",
+    username:"BA",
+    password: "BA"
   },
   toConfig: {
-    host:"localhost:8080",
-    tenant:"<tenant>",
-    tag:"<tag>",
+    host:"http://localhost:8080",
+    tenant:"fisCda",
+    tag:"dev2",
     token:"<c3Auth Token>",
+    username:"BA",
+    password: "BA"
   }
 }
 module.exports = {testData}
-`
+`;
 
 
 let start = () => {
-  TransferState.setup(ipcMain);
+  TransferState.setup();
 
   app.whenReady().then(() => {
-    createWindow()
+    createWindow();
 
     app.on('activate', function () {
       if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow()
+        createWindow();
       }
-    })
-  })
-
-
-}
+    });
+  });
+};
 
 // To avoid checking this into the repo, generate this file dynamically.
 // This is a convenience feature, just put credentials and config into testData.js to avoid having to re-enter a bunch
-fs.exists("testData.js", function (exists) {
-  if (exists) {
-    start();
-  }
-  else {
-    fs.writeFile("testData.js", testDataFileInit, { flag: 'wx' }, function (err, data) {
+fs.exists("testData2.js", function (exists) {
+  // if (exists) {
+  //   start();
+  // }
+  // else
+  // {
+      fs.writeFile("testData2.js", testDataFileInit, { flag: 'wx' }, function (err, data) {
       start();
-    })
-  }
+    });
+  // }
 });
 
 
@@ -103,4 +118,7 @@ ipcMain.on('validateTagAccess', TagValidator.validateTag)
 
 
 // Don't use from the UI, requests should go through TransferState unless testing
-ipcMain.on('beginTransfer', TagTransfer.beginTransfer)
+//  ipcMain.on('beginTransfer', TagTransfer.beginTransfer)
+
+// ipcRenderer.on('test', function() {
+// });
